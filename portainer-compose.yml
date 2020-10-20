@@ -1,0 +1,23 @@
+version: '2.0'
+services:
+  scraper:
+    container_name: TradeMeTrackerV2-scraper-dev
+    image: python
+    volumes:
+      - /dockerdata/cifs/TradeMeTracker/TradeMeTrackerV2Dev:/code
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DEV_ENV=development
+    restart: always
+    command: bash -c "pip install -r /code/requirements.txt && python /code/TradeMeTrackerV2.py"
+
+  dealAlerts:
+    container_name: TradeMeTrackerV2-dealalerts-dev
+    image: python
+    volumes:
+      - /dockerdata/cifs/TradeMeTracker/TradeMeTrackerV2Dev:/code
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DEV_ENV=development
+    restart: always
+    command: bash -c "pip install -r /code/requirements.txt && python /code/TradeMeTrackerV2.py"

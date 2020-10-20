@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Trade Me Tracker</title>
+</head>
+<style>
+    .table-wrapper {
+        margin-top: 50px;
+    }
+
+    .player-img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .add-player-form {
+        margin-top: 50px;
+    }
+    a:link {
+      text-decoration: none ;
+    }
+</style>
+<body>
+<div class="page-wrapper">
+    <nav class="navbar navbar-light bg-light">
+        <span><h3><a href="/"><img src="/logo.png" height="40px"/>Trade Me Tracker</a></h3></span>
+        <p class="float-right">V 2.00</p>
+    </nav>
+    <div class="table-wrapper">
+        <% if (searchterms.length > 0) {%>
+            <table class="table table-hovered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Search Name</th>
+                        <th scope="col">Search Term</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Condition</th>
+                        <th scope="col">Deal Detection Enabled?</th>
+                        <th scope="col">Excluded Terms</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% searchterms.forEach((term, index) => { %>
+                        <tr>
+                            <th scope="row"><%= term.id %></th>
+                            <td><a href="/searchterm/<%= term.id %>"><%= term.search_name %></a></td>
+                            <td><%= term.search_term %></td>
+                            <td><%= term.category %></td>
+                            <td><%= term.condition %></td>
+                            <td><%= term.deal_detection_enabled %></td>
+                            <td><%= term.excluded_terms %></td>
+                            <td>
+                                <a href="/searchterm/<%= term.id %>" rel="noopener" class="btn btn-sm btn-success">View >></a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p class="text-center">No search terms found.</p>
+        <% } %>
+    </div>
+</div>
+</body>
+</html>

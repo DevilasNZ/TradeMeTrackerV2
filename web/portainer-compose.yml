@@ -1,0 +1,14 @@
+version: "2"
+services:
+  node:
+    container_name: "TradeMe_Tracker_Node_JS-dev"
+    image: "node:latest"
+    user: "node"
+    working_dir: /code
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - /dockerdata/cifs/TradeMeTracker/TradeMeTrackerV2/web:/code
+    ports:
+      - "3001:3000"
+    command: bash -c "npm start"
