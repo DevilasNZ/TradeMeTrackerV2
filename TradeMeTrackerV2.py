@@ -15,7 +15,7 @@ else:
     database_user = 'tmt_dev'
 
 #grab the password from the password file.
-password_file = open("dbPassword.txt","r")
+password_file = open("/code/dbPassword.txt","r")
 db_password = password_file.readline()
 password_file.close()
 
