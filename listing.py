@@ -42,20 +42,23 @@ class Listing:
             self.close_datetime_str = self.close_datetime_str + " " + str(current_datetime.year)
         self.close_datetime = datetime.datetime.strptime(self.close_datetime_str,'%a %d %b, %I:%M %p %Y')
 
+        #get seller location data from the Google Tag Manager JSON.
+        all_scripts = str(soup.find_all("script"))
+        all_scripts = all_scripts.split("</script>")
+        try:
+            google_tag_manager_JSON = json.loads(all_scripts[7][52:-37])
+            self.seller_district = google_tag_manager_JSON["sellerDistrict"]
+            self.seller_region = google_tag_manager_JSON["sellerRegion"]
+        except:
+            self.seller_district = None
+            self.seller_region = None
+
+        #get the seller name.
+        self.seller_name = str(soup.find(class_="seller-name"))[23:-4]
+
     def __str__(self):
         return "listing id: {}\n{}\n{}\n{}\nFinal bid: ${}\nreserve met? {}\nClose datetime: {}\nSQL Tuple: {}\n{}\n".format(self.id,self.listingName, len(self.listingName)*"-", self.category, self.current_bid, self.reserve_met, self.close_datetime,self.get_sql_tuple(),self.description)
 
     #used for inserting listing records into the mysql listings table.
     def get_sql_tuple(self):
-        return (self.id,self.search_id,self.listingName,self.category,self.description,self.current_bid,str(self.close_datetime))
-
-#class for a current listing:
-# class LiveListing:
-#     def __init__(self,item_url):
-
-
-# if self.is_live_listing:
-#     return "{}\n{}\n{}\nBuy now: ${}\nStart price: ${}\nreserve met? {}\n{}".format(self.listingName, len(self.listingName)*"-", self.category, self.buy_now_price, self.current_bid, self.reserve_met, self.description)
-
-# if is_live_listing:
-#     self.buy_now_price = float(item_JSON['Offers'][0]['price'].replace(',',''))
+        return (self.id,self.search_id,self.listingName,self.category,self.description,self.current_bid,str(self.close_datetime),self.seller_region,self.seller_district,self.seller_name)
