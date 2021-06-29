@@ -8,7 +8,7 @@ import sys,mysql.connector,datetime,time,os
 def get_search_terms(cursor):
     #get search terms from the database.
     # try:
-    sql = "SELECT * FROM "+database_name+".search_terms;"
+    sql = "SELECT * FROM "+schema+".search_terms;"
     cursor.execute(sql)
     sql_result = cursor.fetchall()
 
@@ -28,13 +28,13 @@ def get_search_terms(cursor):
 
 #check every loaded search term to see if data is due for collection. If so, scrape trademe to obtain said data.
 def run_tracker(search_terms,db,cursor):
-    listing_sql = "INSERT INTO "+database_name+".`expired_listings` (`id`, `search_id`, `name`, `category`, `description`, `sell_price`, `close_datetime`, `seller_region`, `seller_district`, `seller_name`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-    long_term_data_sql = "INSERT INTO "+database_name+".`long_term_data` (`search_id`, `date`, `active_listings`, `sold_listings`, `median_sell_price`) VALUES (%s, %s, %s, %s, %s)"
+    listing_sql = "INSERT INTO "+schema+".`expired_listings` (`id`, `search_id`, `name`, `category`, `description`, `sell_price`, `close_datetime`, `seller_region`, `seller_district`, `seller_name`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    long_term_data_sql = "INSERT INTO "+schema+".`long_term_data` (`search_id`, `date`, `active_listings`, `sold_listings`, `median_sell_price`) VALUES (%s, %s, %s, %s, %s)"
 
     for term in search_terms:
         #firstly, check if data is due to be written to the database (it should be done weekly)
         check_due = False
-        check_term_sql = "SELECT date FROM "+database_name+".long_term_data WHERE search_id={} AND date >= NOW() - INTERVAL 7 DAY".format(term.id)
+        check_term_sql = "SELECT date FROM "+schema+".long_term_data WHERE search_id={} AND date >= NOW() - INTERVAL 7 DAY".format(term.id)
         try:
             cursor.execute(check_term_sql)
             check_term_sql_result = cursor.fetchall()
