@@ -79,7 +79,7 @@ try:
     schema = os.getenv('DB_SCHEMA')
     print("successfully connected to the MySQL database.")
 except:
-    print("There was an error connecting to the Theft Tracker DB. Is the SQL server running?")
+    print("There was an error connecting to the Trade Me Tracker DB. Is the SQL server running?")
     sys.exit(0)
 
 #the main process loop.
