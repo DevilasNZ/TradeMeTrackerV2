@@ -15,18 +15,12 @@ class Listing:
         res.raise_for_status()
         soup = bs4.BeautifulSoup(res.text,features="html.parser")
 
-        #try checking for script content in an updated version of the website first
-        try:
-            #in newer versions of the site, the JSON data has been moved to the bottom of the page source.
-            raw_JSON = str(soup.find('script', {'id':"frend-state"}))[49:-9]
-            raw_JSON = raw_JSON.replace('&q;','\"')
-            item_JSON = json.loads(raw_JSON,strict=False)
-        except:
-            #if that fails try processing the page as if it's an older version of the website
-            raw_JSON = str(soup.find('script'))[35:-9]
-            item_JSON = json.loads(raw_JSON,strict=False)
+        #in newer versions of the site, the JSON data has been moved to the bottom of the page source.
+        raw_JSON = str(soup.find('script', {'id':"frend-state"}))[49:-9]
+        raw_JSON = raw_JSON.replace('&q;','\"')
+        item_JSON = json.loads(raw_JSON,strict=False)
 
-        self.listingName = item_JSON['name']
+        self.listingName = item_JSON['title']
         self.category = item_JSON['category']
         self.description = item_JSON['description']
 
