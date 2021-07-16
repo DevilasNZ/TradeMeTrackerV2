@@ -60,7 +60,7 @@ class Listing:
         else:
             self.has_ping = False
         self.allows_pickups = bool(item_JSON['allowsPickups'])
-        self.shipping_options = len(item_JSON['shippingOptions'])
+        self.shipping_options_count = len(item_JSON['shippingOptions'])
         self.payment_options = item_JSON['paymentOptions']
 
         #marketing data
