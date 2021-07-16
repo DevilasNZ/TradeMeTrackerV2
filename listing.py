@@ -80,7 +80,10 @@ class Listing:
 
         #bidder interaction data
         self.watchers = item_JSON['bidderAndWatchers']
-        self.view_count = item_JSON['viewCount']
+        if 'viewCount' in item_JSON:
+            self.view_count = item_JSON['viewCount']
+        else:
+            self.view_count = 0
         if 'unansweredQuestionCount' in item_JSON:
             self.unanswered_question_count = item_JSON['unansweredQuestionCount']
             self.question_count = item_JSON['questions']['totalCount']
