@@ -27,9 +27,9 @@ class Listing:
         self.description = item_JSON['body']
 
         #date related data
-        start_datetime_str = item_JSON['NGRX_STATE']['listing']['cachedDetails']['entities'][str(id)]['item']['startDate'][9:-5]
+        start_datetime_str = item_JSON['startDate'][9:-5]
         self.start_datetime = datetime.datetime.strptime(start_datetime_str,'%Y-%m-%dT%H:%M:%S')
-        close_datetime_str = item_JSON['NGRX_STATE']['listing']['cachedDetails']['entities'][str(id)]['item']['endDate'][9:-5]
+        close_datetime_str = item_JSON['endDate'][9:-5]
         self.close_datetime = datetime.datetime.strptime(close_datetime_str,'%Y-%m-%dT%H:%M:%S')
 
         #bidding data.
