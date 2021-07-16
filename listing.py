@@ -127,3 +127,6 @@ class Listing:
         ,self.view_count
         ,self.unanswered_question_count
         ,self.question_count)
+
+    def get_sell_price(self):
+        return self.sell_price

@@ -115,7 +115,7 @@ class SearchTerm:
         #get the median sale price of sold listings.
         sold_listings_prices = []
         for listing in self.expired_listings:
-            sold_listings_prices.append(listing.current_bid)
+            sold_listings_prices.append(listing.get_sell_price())
 
         median_sell_price = statistics.median(sold_listings_prices) if len(self.expired_listings) > 0 else None
 
