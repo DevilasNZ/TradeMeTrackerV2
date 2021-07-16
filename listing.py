@@ -61,7 +61,7 @@ class Listing:
         self.photo_keys = []
         for p in photos:
             self.photo_keys.append(p['key'])
-        self.photo_count = len(photo_keys)
+        self.photo_count = len(self.photo_keys)
 
         #bidder interaction data
         self.watchers = item_JSON['bidderAndWatchers']
