@@ -61,7 +61,7 @@ def run_tracker(search_terms,db,cursor):
     ,'view_count'
     ,'unanswered_question_count'
     ,'question_count')
-    VALUES (" + "%s," * 28 + "%s)""""
+    VALUES (" + "%s," * 28 + "%s)"""
     long_term_data_sql = "INSERT INTO "+schema+".`long_term_data` (`search_id`, `date`, `active_listings`, `sold_listings`, `median_sell_price`) VALUES (%s, %s, %s, %s, %s)"
 
     for term in search_terms:
