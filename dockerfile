@@ -7,4 +7,4 @@ RUN pip install mysql-connector-python requests beautifulsoup4 lxml
 #Clone and run the code
 RUN git clone https://github.com/DevilasNZ/TradeMeTrackerV2
 
-CMD ["cd","/TradeMeTrackerV2","git","pull","&&","python3","-u","TradeMeTrackerV2.py"]
+CMD cd /TradeMeTrackerV2 && git pull && python3 -u TradeMeTrackerV2.py

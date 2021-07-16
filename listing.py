@@ -52,7 +52,10 @@ class Listing:
         self.seller_region = item_JSON['region']
 
         #payment data
-        self.has_ping = item_JSON['hasPing']
+        if 'hasPing' in item_JSON:
+            self.has_ping = item_JSON['hasPing']
+        else:
+            self.has_ping = False
         self.allows_pickups = bool(item_JSON['allowsPickups'])
         self.shipping_options = len(item_JSON['shippingOptions'])
         self.payment_options = item_JSON['paymentOptions']
