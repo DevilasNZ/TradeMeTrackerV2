@@ -44,7 +44,10 @@ class Listing:
         self.seller_unique_negative = item_JSON['member']['uniqueNegative']
         self.seller_unique_positive = item_JSON['member']['uniquePositive']
         self.seller_feedback_count = item_JSON['member']['feedbackCount']
-        self.seller_in_trade = item_JSON['member']['isInTrade']
+        if 'isInTrade' in item_JSON['member']:
+            self.seller_in_trade = item_JSON['member']['isInTrade']
+        else:
+            self.seller_in_trade = False
         self.seller_district = item_JSON['suburb']
         self.seller_region = item_JSON['region']
 
