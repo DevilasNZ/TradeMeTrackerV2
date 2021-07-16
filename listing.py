@@ -19,7 +19,7 @@ class Listing:
         raw_JSON = str(soup.find('script', {'id':"frend-state"}))[49:-9]
         raw_JSON = raw_JSON.replace('&q;','\"')
         item_JSON = json.loads(raw_JSON,strict=False)
-        item_JSON = item_JSON['NGRX_STATE']['listing']['cachedDetails']['entities'][str(self.id)]
+        item_JSON = item_JSON['NGRX_STATE']['listing']['cachedDetails']['entities'][str(self.id)]['item']
 
         #general listing data
         self.listingName = item_JSON['title']
