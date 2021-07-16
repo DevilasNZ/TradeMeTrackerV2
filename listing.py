@@ -79,7 +79,10 @@ class Listing:
         self.photo_count = len(self.photo_keys)
 
         #bidder interaction data
-        self.watchers = item_JSON['bidderAndWatchers']
+        if 'bidderAndWatchers' in item_JSON:
+            self.watchers = item_JSON['bidderAndWatchers']
+        else:
+            self.watchers = 0
         if 'viewCount' in item_JSON:
             self.view_count = item_JSON['viewCount']
         else:
