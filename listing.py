@@ -19,49 +19,88 @@ class Listing:
         raw_JSON = str(soup.find('script', {'id':"frend-state"}))[49:-9]
         raw_JSON = raw_JSON.replace('&q;','\"')
         item_JSON = json.loads(raw_JSON,strict=False)
+        item_JSON = item_JSON['NGRX_STATE']['listing']['cachedDetails']['entities'][str(self.id)]
 
+        #general listing data
         self.listingName = item_JSON['title']
-        self.category = item_JSON['category']
-        self.description = item_JSON['description']
+        self.category = item_JSON['categoryPath']
+        self.description = item_JSON['body']
 
-        #get bidding data.
-        self.current_bid = float(soup.find(id="Bidding_CurrentBidValue").contents[0][1:].replace(',',''))
-        reserve_text = soup.find(id="Bidding_ReserveLabel").contents[0]
-        if reserve_text == "Reserve met" or reserve_text == "No reserve":
-            self.reserve_met = True
-        else:
-            self.reserve_met = False
+        #date related data
+        start_datetime_str = item_JSON['NGRX_STATE']['listing']['cachedDetails']['entities'][str(id)]['item']['startDate'][9:-5]
+        self.start_datetime = datetime.datetime.strptime(start_datetime_str,'%Y-%m-%dT%H:%M:%S')
+        close_datetime_str = item_JSON['NGRX_STATE']['listing']['cachedDetails']['entities'][str(id)]['item']['endDate'][9:-5]
+        self.close_datetime = datetime.datetime.strptime(close_datetime_str,'%Y-%m-%dT%H:%M:%S')
 
-        #calculate the close date and time of the listing.
-        self.close_datetime_str = soup.find(id="ClosingTime_ClosingTime").contents[0]
-        self.close_datetime = datetime.datetime.strptime(self.close_datetime_str,'%a %d %b, %I:%M %p')
-        #determine the close year
-        current_datetime = datetime.datetime.now()
-        if self.close_datetime.month > current_datetime.month:
-            #if the close month is greater than the current month, it must have been sold last year.
-            self.close_datetime_str = self.close_datetime_str + " " + str(current_datetime.year-1)
-        else:
-            #if the close month is less than the current month, the listing must be from this year.
-            self.close_datetime_str = self.close_datetime_str + " " + str(current_datetime.year)
-        self.close_datetime = datetime.datetime.strptime(self.close_datetime_str,'%a %d %b, %I:%M %p %Y')
+        #bidding data.
+        self.start_price = item_JSON['startPrice']
+        self.sell_price = item_JSON['maxBidAmount']
+        self.reserve_met = item_JSON['isReserveMet']
+        self.bid_count = item_JSON['bidCount']
 
-        #get seller location data from the Google Tag Manager JSON.
-        all_scripts = str(soup.find_all("script"))
-        all_scripts = all_scripts.split("</script>")
-        try:
-            google_tag_manager_JSON = json.loads(all_scripts[7][52:-37])
-            self.seller_district = google_tag_manager_JSON["sellerDistrict"]
-            self.seller_region = google_tag_manager_JSON["sellerRegion"]
-        except:
-            self.seller_district = None
-            self.seller_region = None
+        #seller data
+        self.seller_name = item_JSON['member']['nickname']
+        self.seller_id = item_JSON['member']['memberId']
+        self.seller_unique_negative = item_JSON['member']['uniqueNegative']
+        self.seller_unique_positive = item_JSON['member']['uniquePositive']
+        self.seller_feedback_count = item_JSON['member']['feedbackCount']
+        self.seller_in_trade = item_JSON['member']['isInTrade']
+        self.seller_district = item_JSON['suburb']
+        self.seller_region = item_JSON['region']
 
-        #get the seller name.
-        self.seller_name = str(soup.find(class_="seller-name"))[23:-4]
+        #payment data
+        self.has_ping = item_JSON['hasPing']
+        self.allows_pickups = bool(item_JSON['allowsPickups'])
+        self.shipping_options = len(item_JSON['shippingOptions'])
+        self.payment_options = item_JSON['paymentOptions']
+
+        #marketing data
+        self.is_featured = item_JSON['isFeatured']
+        self.has_gallery = item_JSON['hasGallery']
+        photos = item_JSON['NGRX_STATE']['listing']['cachedDetails']['entities'][str(id)]['item']['photos']
+        self.photo_keys = []
+        for p in photos:
+            self.photo_keys.append(p['key'])
+        self.photo_count = len(photo_keys)
+
+        #bidder interaction data
+        self.watchers = item_JSON['bidderAndWatchers']
+        self.view_count = item_JSON['viewCount']
+        self.unanswered_question_count = item_JSON['unansweredQuestionCount']
+        self.question_count = item_JSON['questions']['totalCount']
 
     def __str__(self):
         return "listing id: {}\n{}\n{}\n{}\nFinal bid: ${}\nreserve met? {}\nClose datetime: {}\nSQL Tuple: {}\n{}\n".format(self.id,self.listingName, len(self.listingName)*"-", self.category, self.current_bid, self.reserve_met, self.close_datetime,self.get_sql_tuple(),self.description)
 
     #used for inserting listing records into the mysql listings table.
     def get_sql_tuple(self):
-        return (self.id,self.search_id,self.listingName,self.category,self.description,self.current_bid,str(self.close_datetime),self.seller_region,self.seller_district,self.seller_name)
+        return (self.id
+        ,self.search_id
+        ,self.listingName
+        ,self.category
+        ,self.description
+        ,self.start_datetime
+        ,self.close_datetime
+        ,self.start_price
+        ,self.sell_price
+        ,self.bid_count
+        ,self.seller_name
+        ,self.seller_id
+        ,self.seller_unique_negative
+        ,self.seller_unique_positive
+        ,self.seller_feedback_count
+        ,self.seller_in_trade
+        ,self.seller_district
+        ,self.seller_region
+        ,self.has_ping
+        ,self.allows_pickups
+        ,self.shipping_options_count
+        ,self.payment_options
+        ,self.is_featured
+        ,self.has_gallery
+        ,self.photo_keys
+        ,self.photo_count
+        ,self.watchers
+        ,self.view_count
+        ,self.unanswered_question_count
+        ,self.question_count)

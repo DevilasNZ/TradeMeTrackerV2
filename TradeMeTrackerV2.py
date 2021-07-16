@@ -29,6 +29,38 @@ def get_search_terms(cursor):
 #check every loaded search term to see if data is due for collection. If so, scrape trademe to obtain said data.
 def run_tracker(search_terms,db,cursor):
     listing_sql = "INSERT INTO "+schema+".`expired_listings` (`id`, `search_id`, `name`, `category`, `description`, `sell_price`, `close_datetime`, `seller_region`, `seller_district`, `seller_name`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    "INSERT INTO "+schema+".'expired_listings' "
+    +"('id'
+    ,'search_id'
+    ,'name'
+    ,'category'
+    ,'description'
+    ,'start_datetime'
+    ,'close_datetime'
+    ,'start_price'
+    ,'sell_price'
+    ,'bid_count'
+    ,'seller_name'
+    ,'seller_id'
+    ,'seller_unique_negative'
+    ,'seller_unique_positive'
+    ,'seller_feedback_count'
+    ,'seller_in_trade'
+    ,'seller_district'
+    ,'seller_region'
+    ,'has_ping'
+    ,'allows_pickups'
+    ,'shipping_options_count'
+    ,'payment_options'
+    ,'is_featured'
+    ,'has_gallery'
+    ,'photo_keys'
+    ,'photo_count'
+    ,'watchers'
+    ,'view_count'
+    ,'unanswered_question_count'
+    ,'question_count')
+    VALUES (" + "%s," * 28 + "%s)"
     long_term_data_sql = "INSERT INTO "+schema+".`long_term_data` (`search_id`, `date`, `active_listings`, `sold_listings`, `median_sell_price`) VALUES (%s, %s, %s, %s, %s)"
 
     for term in search_terms:
