@@ -57,7 +57,7 @@ class Listing:
         #marketing data
         self.is_featured = item_JSON['isFeatured']
         self.has_gallery = item_JSON['hasGallery']
-        photos = item_JSON['NGRX_STATE']['listing']['cachedDetails']['entities'][str(id)]['item']['photos']
+        photos = item_JSON['photos']
         self.photo_keys = []
         for p in photos:
             self.photo_keys.append(p['key'])
