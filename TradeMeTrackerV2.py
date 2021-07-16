@@ -3,6 +3,8 @@ from listing import Listing
 import sys,mysql.connector,datetime,time,os
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+print("running tracker version 2.01")
+
 
 #find and return all the search results stored in MySQL.
 def get_search_terms(cursor):
