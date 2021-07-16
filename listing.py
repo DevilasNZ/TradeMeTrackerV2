@@ -35,7 +35,10 @@ class Listing:
         #bidding data.
         self.start_price = item_JSON['startPrice']
         self.sell_price = item_JSON['maxBidAmount']
-        self.reserve_met = item_JSON['isReserveMet']
+        if 'isReserveMet' in item_JSON:
+            self.reserve_met = item_JSON['isReserveMet']
+        else:
+            self.reserve_met = False
         self.bid_count = item_JSON['bidCount']
 
         #seller data
