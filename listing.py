@@ -9,6 +9,7 @@ class Listing:
 
         self.id = int(item_url[-24:-14])
         self.search_id = search_id
+        self.error = False
 
         #get the raw html JSON data.
         res = requests.get(item_url)
@@ -19,7 +20,11 @@ class Listing:
         raw_JSON = str(soup.find('script', {'id':"frend-state"}))[49:-9]
         raw_JSON = raw_JSON.replace('&q;','\"')
         item_JSON = json.loads(raw_JSON,strict=False)
-        item_JSON = item_JSON['NGRX_STATE']['listing']['cachedDetails']['entities'][str(self.id)]['item']
+        try:
+            item_JSON = item_JSON['NGRX_STATE']['listing']['cachedDetails']['entities'][str(self.id)]['item']
+        except:
+            self.error = True
+            return
 
         #general listing data
         self.listingName = item_JSON['title']

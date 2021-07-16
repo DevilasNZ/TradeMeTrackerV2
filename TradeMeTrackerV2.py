@@ -89,12 +89,13 @@ def run_tracker(search_terms,db,cursor):
             these_expired_listings = term.get_expired_listings()
             if(len(these_expired_listings) > 0):
                 for listing in these_expired_listings:
-                    #for each of the found listings get the sql tuple and try and insert the listing into the database. if the listing already exists it will throw an error.
-                    this_listing_tuple = listing.get_sql_tuple()
-                    # try:
-                    cursor.execute(listing_sql,this_listing_tuple)
-                    # except:
-                    #     print("there was an issue with listing " + str(listing.id) + ". is it already in the database?")
+                    if !listing.error:
+                        #for each of the found listings get the sql tuple and try and insert the listing into the database. if the listing already exists it will throw an error.
+                        this_listing_tuple = listing.get_sql_tuple()
+                        # try:
+                        cursor.execute(listing_sql,this_listing_tuple)
+                        # except:
+                        #     print("there was an issue with listing " + str(listing.id) + ". is it already in the database?")
                 db.commit()
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
