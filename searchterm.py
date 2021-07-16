@@ -109,8 +109,8 @@ class SearchTerm:
         search_result_soup = bs4.BeautifulSoup(res.text,features="html.parser")
 
         #get the number of results returned.
-        resultCount = search_result_soup.select("#totalCount")
-        current_listing_count = int(resultCount[0].getText())
+        current_listing_count_str = soup.find_all("h3", {"class":"tm-search-header-result-count__heading ng-star-inserted"})[0].get_text()
+        current_listing_count = int(current_listing_count_str.split(" ")[2])
 
         #get the median sale price of sold listings.
         sold_listings_prices = []
