@@ -61,8 +61,14 @@ class Listing:
         self.payment_options = item_JSON['paymentOptions']
 
         #marketing data
-        self.is_featured = item_JSON['isFeatured']
-        self.has_gallery = item_JSON['hasGallery']
+        if 'isFeatured' in item_JSON:
+            self.is_featured = item_JSON['isFeatured']
+        else:
+            self.is_featured = False
+        if 'hasGallery' in item_JSON:
+            self.has_gallery = item_JSON['hasGallery']
+        else:
+            self.has_gallery = False
         photos = item_JSON['photos']
         self.photo_keys = []
         for p in photos:
