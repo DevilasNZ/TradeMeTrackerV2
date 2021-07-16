@@ -30,8 +30,8 @@ def get_search_terms(cursor):
 
 #check every loaded search term to see if data is due for collection. If so, scrape trademe to obtain said data.
 def run_tracker(search_terms,db,cursor):
-    listing_sql = "INSERT INTO "+schema+".'expired_listings' "
-    +"""('id'
+    listing_sql = "INSERT INTO "+schema+".'expired_listings' "+
+    """('id'
     ,'search_id'
     ,'name'
     ,'category'
