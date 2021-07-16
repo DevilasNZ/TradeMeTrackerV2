@@ -78,8 +78,13 @@ class Listing:
         #bidder interaction data
         self.watchers = item_JSON['bidderAndWatchers']
         self.view_count = item_JSON['viewCount']
-        self.unanswered_question_count = item_JSON['unansweredQuestionCount']
-        self.question_count = item_JSON['questions']['totalCount']
+        if 'unansweredQuestionCount' in item_JSON:
+            self.unanswered_question_count = item_JSON['unansweredQuestionCount']
+            self.question_count = item_JSON['questions']['totalCount']
+        else:
+            #no questions have been asked.
+            self.unanswered_question_count = 0
+            self.question_count = 0
 
     def __str__(self):
         return "listing id: {}\n{}\n{}\n{}\nFinal bid: ${}\nreserve met? {}\nClose datetime: {}\nSQL Tuple: {}\n{}\n".format(self.id,self.listingName, len(self.listingName)*"-", self.category, self.current_bid, self.reserve_met, self.close_datetime,self.get_sql_tuple(),self.description)
